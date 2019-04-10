@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">rich_editor</string>
+    <string name="editor_default_font_size">19</string>
+
+    <!-- 文字大小 1-7 -->
+    <string-array name="editor_font_size_arr">
+        <item>10</item>
+        <item>14</item>
+        <item>16</item>
+        <item>19</item>
+        <item>24</item>
+        <item>32</item>
+        <item>48</item>
+    </string-array>
+</resources>

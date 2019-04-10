@@ -1,0 +1,24 @@
+# 忽略所有 .iml 文件
+*.iml
+
+# 忽略 .gradle 文件夹及其包含的所有文件和文件夹
+.gradle
+
+# 忽略根目录下的 local.properties 文件和文件夹
+/local.properties
+
+# 忽略 .idea 文件和文件夹及其包含的所有文件和文件夹
+.idea
+
+.DS_Store
+
+# 忽略根目录下的 build 文件和文件夹
+/build
+
+/captures
+
+# 忽略 .externalNativeBuild 文件和文件夹及其包含的所有文件和文件夹
+.externalNativeBuild
+
+# 忽略根目录下的 javadoc 文件和文件夹
+javadoc
