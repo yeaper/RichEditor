@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:layout_marginLeft="19dp"
-    android:layout_marginRight="19dp"
-    android:layout_marginTop="14dp">
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="15dp">
     
     <ImageView
         android:id="@+id/iv_materials_img"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="58dp"
         android:src="@drawable/module_editor_ic_materials_video" />
 
     <TextView

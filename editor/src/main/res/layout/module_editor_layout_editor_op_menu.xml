@@ -137,6 +137,6 @@
         android:id="@+id/rv_editor_materials_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
+        android:paddingBottom="15dp"
         android:visibility="gone"/>
 </LinearLayout>

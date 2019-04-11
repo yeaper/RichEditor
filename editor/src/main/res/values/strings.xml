@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">rich_editor</string>
     <string name="editor_default_font_size">19</string>
+    <string name="editor_select_color">选择颜色</string>
+    <string name="editor_select_font_size">选择字号</string>
+    <string name="editor_cancel">取消</string>
 
     <!-- 文字大小 1-7 -->
     <string-array name="editor_font_size_arr">

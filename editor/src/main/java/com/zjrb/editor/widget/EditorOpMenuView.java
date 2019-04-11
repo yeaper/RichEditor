@@ -26,6 +26,7 @@ import com.zjrb.editor.adapter.MaterialsMenuAdapter;
 import com.zjrb.editor.bean.MaterialsMenuBean;
 import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.config.MaterialsMenuType;
+import com.zjrb.editor.interfaces.OnColorSelectListener;
 import com.zjrb.editor.interfaces.OnDecorationStateListener;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.utils.ImageUtils;
@@ -370,10 +371,19 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
      * 选择文字颜色
      */
     private void selectForeColor(){
-        if (mRichEditor != null) {
-            mRichEditor.setTextColor(Color.GREEN);
-        }
-        setForeColorSelect(Color.GREEN);
+
+        new ColorSelectDialog(mContext)
+                .setTitle(mContext.getString(R.string.editor_select_color))
+//                .setColors(int[], )
+                .setOnColorSelectListener(new OnColorSelectListener() {
+                    @Override
+                    public void onColorSelect(int color) {
+                        if (mRichEditor != null) {
+                            mRichEditor.setTextColor(color);
+                        }
+                        setForeColorSelect(color);
+                    }
+                }).show();
     }
 
     /**
