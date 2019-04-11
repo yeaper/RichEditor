@@ -14,7 +14,6 @@ public enum EditorOpType {
     JUSTIFYLEFT,
     JUSTIFYRIGHT,
     JUSTIFYCENTER,
-    JUSTIFYFULL,
     ORDEREDLIST,
     IMAGE,
     LINK;

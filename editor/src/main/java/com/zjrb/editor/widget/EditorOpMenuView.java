@@ -8,24 +8,29 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zjrb.editor.R;
 import com.zjrb.editor.RichEditor;
+import com.zjrb.editor.adapter.MaterialsMenuAdapter;
+import com.zjrb.editor.bean.MaterialsMenuBean;
 import com.zjrb.editor.config.EditorOpType;
+import com.zjrb.editor.config.MaterialsMenuType;
 import com.zjrb.editor.interfaces.OnDecorationStateListener;
+import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.utils.ImageUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,8 +42,9 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
 
     private final static String TAG = "EditorOpMenuView";
 
-    private RichEditor mRichEditor;
     private Context mContext;
+    private RichEditor mRichEditor;
+    private OnMaterialsItemClickListener mOnMaterialsItemClickListener;
 
     private ImageButton mBoldView;
     private ImageButton mItalicView;
@@ -51,7 +57,9 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     private ImageButton mAlignLeftView;
     private ImageButton mAlignCenterView;
     private ImageButton mAlignRightView;
-    private ImageButton mAlignFullView;
+
+    private RecyclerView mMaterialsMenuView;
+    private MaterialsMenuAdapter mMaterialsMenuAdapter;
 
     // 图标颜色状态
     private final static ColorStateList sColorStateList;
@@ -100,7 +108,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         mAlignLeftView = view.findViewById(R.id.editor_action_justify_left);
         mAlignRightView = view.findViewById(R.id.editor_action_justify_right);
         mAlignCenterView = view.findViewById(R.id.editor_action_justify_center);
-        mAlignFullView = view.findViewById(R.id.editor_action_justify_full);
+        mMaterialsMenuView = view.findViewById(R.id.rv_editor_materials_menu);
 
         //监听点击事件
         mBoldView.setOnClickListener(this);
@@ -113,7 +121,6 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         mAlignLeftView.setOnClickListener(this);
         mAlignRightView.setOnClickListener(this);
         mAlignCenterView.setOnClickListener(this);
-        mAlignFullView.setOnClickListener(this);
 
         //处理图标选中状态
         ImageUtils.setTintList(mBoldView.getDrawable(), sColorStateList);
@@ -123,9 +130,59 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         ImageUtils.setTintList(mAlignLeftView.getDrawable(), sColorStateList);
         ImageUtils.setTintList(mAlignRightView.getDrawable(), sColorStateList);
         ImageUtils.setTintList(mAlignCenterView.getDrawable(), sColorStateList);
-        ImageUtils.setTintList(mAlignFullView.getDrawable(), sColorStateList);
 
+        initMaterialsMenuView();
         addView(view);
+    }
+
+    /**
+     * 初始化素材菜单
+     */
+    private void initMaterialsMenuView(){
+        //增加素材菜单item
+        List<MaterialsMenuBean> materialsMenuBeans = new ArrayList<>();
+        materialsMenuBeans.add(new MaterialsMenuBean(
+                MaterialsMenuType.MATERIALS_IMAGE,
+                R.drawable.module_editor_ic_materials_image,
+                mContext.getResources().getString(R.string.editor_materials_img)));
+        materialsMenuBeans.add(new MaterialsMenuBean(
+                MaterialsMenuType.MATERIALS_VIDEO,
+                R.drawable.module_editor_ic_materials_video,
+                mContext.getResources().getString(R.string.editor_materials_video)));
+        materialsMenuBeans.add(new MaterialsMenuBean(
+                MaterialsMenuType.MATERIALS_TXT,
+                R.drawable.module_editor_ic_materials_txt,
+                mContext.getResources().getString(R.string.editor_materials_txt)));
+        materialsMenuBeans.add(new MaterialsMenuBean(
+                MaterialsMenuType.LOCAL_IMAGE,
+                R.drawable.module_editor_ic_local_image,
+                mContext.getResources().getString(R.string.editor_local_img)));
+        materialsMenuBeans.add(new MaterialsMenuBean(
+                MaterialsMenuType.LOCAL_VIDEO,
+                R.drawable.module_editor_ic_local_video,
+                mContext.getResources().getString(R.string.editor_local_video)));
+        mMaterialsMenuAdapter = new MaterialsMenuAdapter(materialsMenuBeans);
+        mMaterialsMenuView.setLayoutManager(new GridLayoutManager(mContext, 4));
+        mMaterialsMenuView.setAdapter(mMaterialsMenuAdapter);
+        //item点击回调
+        mMaterialsMenuAdapter.setOnMaterialsItemClickListener(new OnMaterialsItemClickListener() {
+
+            @Override
+            public void onMaterialsItemClick(MaterialsMenuBean bean) {
+                if(mOnMaterialsItemClickListener != null){
+                    mOnMaterialsItemClickListener.onMaterialsItemClick(bean);
+                }
+            }
+        });
+    }
+
+    /**
+     * 设置素材菜单item点击监听
+     *
+     * @param onMaterialsItemClickListener .
+     */
+    public void setOnMaterialsItemClickListener(OnMaterialsItemClickListener onMaterialsItemClickListener) {
+        this.mOnMaterialsItemClickListener = onMaterialsItemClickListener;
     }
 
     /**
@@ -200,9 +257,6 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
                             case JUSTIFYCENTER:
                                 setAlignSelect(R.id.editor_action_justify_center);
                                 break;
-                            case JUSTIFYFULL:
-                                setAlignSelect(R.id.editor_action_justify_full);
-                                break;
                             case FORECOLOR:
                                 setForeColorSelect(Color.parseColor(type.getValue().toString()));
                                 break;
@@ -232,25 +286,16 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
             mAlignLeftView.setSelected(true);
             mAlignRightView.setSelected(false);
             mAlignCenterView.setSelected(false);
-            mAlignFullView.setSelected(false);
         }
         if(id == R.id.editor_action_justify_right) {
             mAlignLeftView.setSelected(false);
             mAlignRightView.setSelected(true);
             mAlignCenterView.setSelected(false);
-            mAlignFullView.setSelected(false);
         }
         if(id == R.id.editor_action_justify_center) {
+            mAlignLeftView.setSelected(false);
+            mAlignRightView.setSelected(false);
             mAlignCenterView.setSelected(true);
-            mAlignFullView.setSelected(false);
-            mAlignLeftView.setSelected(false);
-            mAlignRightView.setSelected(false);
-        }
-        if(id == R.id.editor_action_justify_full){
-            mAlignCenterView.setSelected(false);
-            mAlignFullView.setSelected(true);
-            mAlignLeftView.setSelected(false);
-            mAlignRightView.setSelected(false);
         }
     }
 
@@ -387,14 +432,12 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
             }
             setAlignSelect(R.id.editor_action_justify_center);
         }
-        if(id == R.id.editor_action_justify_full){
-            if (mRichEditor != null) {
-                mRichEditor.setAlignFull();
-            }
-            setAlignSelect(R.id.editor_action_justify_full);
-        }
         if(id == R.id.editor_action_materials){ //点击素材按钮
-
+            if(mMaterialsMenuView.getVisibility() == View.VISIBLE){
+                mMaterialsMenuView.setVisibility(View.GONE);
+            }else{
+                mMaterialsMenuView.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

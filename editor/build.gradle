@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: 'http://10.100.62.98:8086/nexus/service/local/artifact/maven/redirect?r=releases&g=cn.daily.android&a=publish&e=gradle&v=0.0.8'
+//apply from: 'http://10.100.62.98:8086/nexus/service/local/artifact/maven/redirect?r=releases&g=cn.daily.android&a=publish&e=gradle&v=0.0.8'
 import java.util.concurrent.TimeUnit
 
 android {
