@@ -1,5 +1,7 @@
 package com.zjrb.editor.interfaces;
 
+import com.zjrb.editor.bean.FontColorBean;
+
 /**
  * 颜色玄色回调接口
  *
@@ -7,5 +9,5 @@ package com.zjrb.editor.interfaces;
  */
 public interface OnColorSelectListener {
 
-    void onColorSelect(int color);
+    void onColorSelect(FontColorBean bean, int pos);
 }

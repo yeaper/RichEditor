@@ -12,17 +12,15 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/editor_menu_height"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
             android:scrollbars="none">
 
             <ImageButton
                 android:id="@+id/editor_action_bold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -31,7 +29,7 @@
             <ImageButton
                 android:id="@+id/editor_action_italic"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -40,7 +38,7 @@
             <ImageButton
                 android:id="@+id/editor_action_underline"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -49,7 +47,7 @@
             <LinearLayout
                 android:id="@+id/editor_action_font_size"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -60,7 +58,6 @@
                     android:id="@+id/editor_font_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:text="@string/editor_default_font_size"
                     android:textColor="@color/_68696e"
                     android:textSize="20sp" />
@@ -75,7 +72,7 @@
             <ImageButton
                 android:id="@+id/editor_action_font_color"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -84,7 +81,7 @@
             <ImageButton
                 android:id="@+id/editor_action_materials"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -93,7 +90,7 @@
             <ImageButton
                 android:id="@+id/editor_action_ordered_list"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -102,7 +99,7 @@
             <ImageButton
                 android:id="@+id/editor_action_justify_left"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -111,7 +108,7 @@
             <ImageButton
                 android:id="@+id/editor_action_justify_right"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -120,7 +117,7 @@
             <ImageButton
                 android:id="@+id/editor_action_justify_center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -131,12 +128,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/_d8d8d8"/>
+        android:background="@color/_f0f0f0"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_editor_materials_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="15dp"
+        android:overScrollMode="never"
         android:visibility="gone"/>
 </LinearLayout>

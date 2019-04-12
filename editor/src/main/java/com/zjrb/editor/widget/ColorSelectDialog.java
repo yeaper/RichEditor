@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,7 +15,11 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.zjrb.editor.R;
+import com.zjrb.editor.adapter.FontColorAdapter;
+import com.zjrb.editor.bean.FontColorBean;
 import com.zjrb.editor.interfaces.OnColorSelectListener;
+
+import java.util.List;
 
 /**
  * 文字颜色选择弹窗
@@ -27,9 +32,8 @@ public class ColorSelectDialog extends AlertDialog implements View.OnClickListen
     private TextView mTitle;
     private TextView mCancel;
     private RecyclerView mRvColor;
+    private FontColorAdapter mFontColorAdapter;
 
-    private int[] mColors;
-    private int mSelectColor;
     private OnColorSelectListener mOnColorSelectListener;
 
     public ColorSelectDialog(Context context) {
@@ -45,6 +49,7 @@ public class ColorSelectDialog extends AlertDialog implements View.OnClickListen
     }
 
     private void configDialog() {
+        setCanceledOnTouchOutside(true);
         Window window = getWindow();
         //设置对话框在底部
         if (window != null) {
@@ -93,14 +98,33 @@ public class ColorSelectDialog extends AlertDialog implements View.OnClickListen
     /**
      * 设置颜色
      *
-     * @param colors 颜色数组
-     * @param selectColor 已选中颜色
+     * @param fontColorBeans 颜色组
      * @return ColorSelectDialog
      */
-    public ColorSelectDialog setColors(int[] colors, int selectColor) {
-        this.mColors = colors;
-        this.mSelectColor = selectColor;
+    public ColorSelectDialog setColors(List<FontColorBean> fontColorBeans) {
+        initColorsView(fontColorBeans);
         return this;
+    }
+
+    /**
+     * 初始化颜色列表
+     *
+     * @param fontColorBeans 颜色数据集
+     */
+    private void initColorsView(List<FontColorBean> fontColorBeans){
+        mRvColor.setLayoutManager(new GridLayoutManager(getContext(), 5));
+        mFontColorAdapter = new FontColorAdapter(fontColorBeans);
+        mRvColor.setAdapter(mFontColorAdapter);
+        mRvColor.addItemDecoration(new FontColorItemDecoration(getContext()));
+        mFontColorAdapter.setOnColorSelectListener(new OnColorSelectListener() {
+            @Override
+            public void onColorSelect(FontColorBean bean, int pos) {
+                if(mOnColorSelectListener != null){
+                    mOnColorSelectListener.onColorSelect(bean, pos);
+                }
+                dismiss(); //选完关闭弹窗
+            }
+        });
     }
 
     /**

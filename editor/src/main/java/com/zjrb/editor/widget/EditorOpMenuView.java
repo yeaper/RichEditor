@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.zjrb.editor.R;
 import com.zjrb.editor.RichEditor;
 import com.zjrb.editor.adapter.MaterialsMenuAdapter;
+import com.zjrb.editor.bean.FontColorBean;
 import com.zjrb.editor.bean.MaterialsMenuBean;
 import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.config.MaterialsMenuType;
@@ -36,10 +37,10 @@ import java.util.List;
 
 /**
  * 富文本编辑器的菜单
- *
+ * <p>
  * Created by yyp on 2019/2/27
  */
-public class EditorOpMenuView extends FrameLayout implements View.OnClickListener{
+public class EditorOpMenuView extends FrameLayout implements View.OnClickListener {
 
     private final static String TAG = "EditorOpMenuView";
 
@@ -61,16 +62,18 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
 
     private RecyclerView mMaterialsMenuView;
     private MaterialsMenuAdapter mMaterialsMenuAdapter;
+    private List<FontColorBean> mFontColorBeans;
 
     // 图标颜色状态
     private final static ColorStateList sColorStateList;
+
     static {
-        int[][] states = new int[][] {
-                new int[] { android.R.attr.state_selected}, // 选中
-                new int[] { -android.R.attr.state_selected} // 未选中
+        int[][] states = new int[][]{
+                new int[]{android.R.attr.state_selected}, // 选中
+                new int[]{-android.R.attr.state_selected} // 未选中
         };
 
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 Color.parseColor("#4786ff"),
                 Color.parseColor("#68696e")
         };
@@ -139,7 +142,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     /**
      * 初始化素材菜单
      */
-    private void initMaterialsMenuView(){
+    private void initMaterialsMenuView() {
         //增加素材菜单item
         List<MaterialsMenuBean> materialsMenuBeans = new ArrayList<>();
         materialsMenuBeans.add(new MaterialsMenuBean(
@@ -170,7 +173,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
 
             @Override
             public void onMaterialsItemClick(MaterialsMenuBean bean) {
-                if(mOnMaterialsItemClickListener != null){
+                if (mOnMaterialsItemClickListener != null) {
                     mOnMaterialsItemClickListener.onMaterialsItemClick(bean);
                 }
             }
@@ -283,17 +286,17 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
      * @param id 对齐方式按钮id
      */
     private void setAlignSelect(@IdRes int id) {
-        if(id == R.id.editor_action_justify_left) {
+        if (id == R.id.editor_action_justify_left) {
             mAlignLeftView.setSelected(true);
             mAlignRightView.setSelected(false);
             mAlignCenterView.setSelected(false);
         }
-        if(id == R.id.editor_action_justify_right) {
+        if (id == R.id.editor_action_justify_right) {
             mAlignLeftView.setSelected(false);
             mAlignRightView.setSelected(true);
             mAlignCenterView.setSelected(false);
         }
-        if(id == R.id.editor_action_justify_center) {
+        if (id == R.id.editor_action_justify_center) {
             mAlignLeftView.setSelected(false);
             mAlignRightView.setSelected(false);
             mAlignCenterView.setSelected(true);
@@ -354,13 +357,13 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     private void setFontSizeSelect(@IntRange(from = 1, to = 7) int size) {
         mTextSizeView.setTag(size);
         String[] fontSizeArr = getResources().getStringArray(R.array.editor_font_size_arr);
-        mTextSizeView.setText(fontSizeArr[size-1]); //size-1 因为fontSizeArr从0开始的
+        mTextSizeView.setText(fontSizeArr[size - 1]); //size-1 因为fontSizeArr从0开始的
     }
 
     /**
      * 选择文字大小
      */
-    private void selectFontSize(){
+    private void selectFontSize() {
         if (mRichEditor != null) {
             mRichEditor.setFontSize(5); //24px
         }
@@ -370,20 +373,44 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     /**
      * 选择文字颜色
      */
-    private void selectForeColor(){
-
+    private void selectForeColor() {
         new ColorSelectDialog(mContext)
                 .setTitle(mContext.getString(R.string.editor_select_color))
-//                .setColors(int[], )
+                .setColors(generateColors())
                 .setOnColorSelectListener(new OnColorSelectListener() {
                     @Override
-                    public void onColorSelect(int color) {
+                    public void onColorSelect(FontColorBean bean, int pos) {
+                        //设置编辑器文字颜色
                         if (mRichEditor != null) {
-                            mRichEditor.setTextColor(color);
+                            mRichEditor.setTextColor(bean.getColor());
                         }
-                        setForeColorSelect(color);
+                        //改变菜单图标的颜色
+                        setForeColorSelect(bean.getColor());
+                        //对应颜色集合中设置为选中
+                        mFontColorBeans.get(pos).setSelect(true);
                     }
                 }).show();
+    }
+
+    /**
+     * 生成颜色数据集合
+     *
+     * @return 颜色数据集合
+     */
+    private List<FontColorBean> generateColors() {
+        //有颜色直接返回
+        if(mFontColorBeans != null && !mFontColorBeans.isEmpty()){
+            return mFontColorBeans;
+        }
+        //生成全部未选中的颜色集合
+        mFontColorBeans = new ArrayList<>();
+        int[] colors = getContext().getResources().getIntArray(R.array.editor_font_color);
+        for (int color : colors) {
+            FontColorBean bean = new FontColorBean(color, false);
+            mFontColorBeans.add(bean);
+        }
+        mFontColorBeans.get(0).setSelect(true); //默认第一个黑色选中
+        return mFontColorBeans;
     }
 
     /**
@@ -394,58 +421,58 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if(id == R.id.editor_action_bold){
+        if (id == R.id.editor_action_bold) {
             if (mRichEditor != null) {
                 mRichEditor.setBold();
             }
             setBoldSelect(!view.isSelected());
         }
-        if(id == R.id.editor_action_italic){
+        if (id == R.id.editor_action_italic) {
             if (mRichEditor != null) {
                 mRichEditor.setItalic();
             }
             setItalicSelect(!view.isSelected());
         }
-        if(id == R.id.editor_action_underline){
+        if (id == R.id.editor_action_underline) {
             if (mRichEditor != null) {
                 mRichEditor.setUnderline();
             }
             setUnderlineSelect(!view.isSelected());
         }
-        if(id == R.id.editor_action_font_size){ //选择文字大小
+        if (id == R.id.editor_action_font_size) { //选择文字大小
             selectFontSize();
         }
-        if(id == R.id.editor_action_font_color){ //选择文字颜色
+        if (id == R.id.editor_action_font_color) { //选择文字颜色
             selectForeColor();
         }
-        if(id == R.id.editor_action_ordered_list){
+        if (id == R.id.editor_action_ordered_list) {
             if (mRichEditor != null) {
                 mRichEditor.setNumbers();
             }
             setOrderedList(!view.isSelected());
         }
-        if(id == R.id.editor_action_justify_left){
+        if (id == R.id.editor_action_justify_left) {
             if (mRichEditor != null) {
                 mRichEditor.setAlignLeft();
             }
             setAlignSelect(R.id.editor_action_justify_left);
         }
-        if(id == R.id.editor_action_justify_right){
+        if (id == R.id.editor_action_justify_right) {
             if (mRichEditor != null) {
                 mRichEditor.setAlignRight();
             }
             setAlignSelect(R.id.editor_action_justify_right);
         }
-        if(id == R.id.editor_action_justify_center){
+        if (id == R.id.editor_action_justify_center) {
             if (mRichEditor != null) {
                 mRichEditor.setAlignCenter();
             }
             setAlignSelect(R.id.editor_action_justify_center);
         }
-        if(id == R.id.editor_action_materials){ //点击素材按钮
-            if(mMaterialsMenuView.getVisibility() == View.VISIBLE){
+        if (id == R.id.editor_action_materials) { //点击素材按钮
+            if (mMaterialsMenuView.getVisibility() == View.VISIBLE) {
                 mMaterialsMenuView.setVisibility(View.GONE);
-            }else{
+            } else {
                 mMaterialsMenuView.setVisibility(View.VISIBLE);
             }
         }
