@@ -24,11 +24,13 @@ import com.zjrb.editor.R;
 import com.zjrb.editor.RichEditor;
 import com.zjrb.editor.adapter.MaterialsMenuAdapter;
 import com.zjrb.editor.bean.FontColorBean;
+import com.zjrb.editor.bean.FontSizeBean;
 import com.zjrb.editor.bean.MaterialsMenuBean;
 import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.config.MaterialsMenuType;
 import com.zjrb.editor.interfaces.OnColorSelectListener;
 import com.zjrb.editor.interfaces.OnDecorationStateListener;
+import com.zjrb.editor.interfaces.OnFontSizeSelectListener;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.utils.ImageUtils;
 
@@ -63,6 +65,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     private RecyclerView mMaterialsMenuView;
     private MaterialsMenuAdapter mMaterialsMenuAdapter;
     private List<FontColorBean> mFontColorBeans;
+    private List<FontSizeBean> mFontSizeBeans;
 
     // 图标颜色状态
     private final static ColorStateList sColorStateList;
@@ -364,10 +367,22 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
      * 选择文字大小
      */
     private void selectFontSize() {
-        if (mRichEditor != null) {
-            mRichEditor.setFontSize(5); //24px
-        }
-        setFontSizeSelect(5);
+        new FontSizeSelectDialog(mContext)
+                .setTitle(mContext.getString(R.string.editor_select_font_size))
+                .setFontSizes(generateFontSizes())
+                .setOnFontSizeSelectListener(new OnFontSizeSelectListener() {
+                    @Override
+                    public void onFontSizeSelect(FontSizeBean bean, int pos) {
+                        //设置编辑器文字大小
+                        if (mRichEditor != null) {
+                            mRichEditor.setFontSize(bean.getSize());
+                        }
+                        //改变菜单图标的文字大小
+                        setFontSizeSelect(bean.getSize());
+                        //对应文字大小集合中设置为选中
+                        mFontSizeBeans.get(pos).setSelect(true);
+                    }
+                }).show();
     }
 
     /**
@@ -399,7 +414,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
      */
     private List<FontColorBean> generateColors() {
         //有颜色直接返回
-        if(mFontColorBeans != null && !mFontColorBeans.isEmpty()){
+        if (mFontColorBeans != null && !mFontColorBeans.isEmpty()) {
             return mFontColorBeans;
         }
         //生成全部未选中的颜色集合
@@ -411,6 +426,27 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         }
         mFontColorBeans.get(0).setSelect(true); //默认第一个黑色选中
         return mFontColorBeans;
+    }
+
+    /**
+     * 生成文字大小数据集合
+     *
+     * @return 文字大小数据集合
+     */
+    private List<FontSizeBean> generateFontSizes() {
+        //有数据直接返回
+        if (mFontSizeBeans != null && !mFontSizeBeans.isEmpty()) {
+            return mFontSizeBeans;
+        }
+        //生成全部未选中的文字大小集合
+        mFontSizeBeans = new ArrayList<>();
+        String[] fontSizes = getContext().getResources().getStringArray(R.array.editor_font_size_arr);
+        for (int i = 0; i < fontSizes.length; i++) {
+            FontSizeBean bean = new FontSizeBean(i + 1, fontSizes[i], false);
+            mFontSizeBeans.add(bean);
+        }
+        mFontSizeBeans.get(3).setSelect(true); //默认19px选中
+        return mFontSizeBeans;
     }
 
     /**

@@ -69,6 +69,8 @@ public class FontColorAdapter extends RecyclerView.Adapter<FontColorAdapter.Font
 
     /**
      * 设置只有一个为选中
+     *
+     * @param pos 选中的位置
      */
     private void setSelect(int pos){
         for(FontColorBean bean: mData){
@@ -78,7 +80,7 @@ public class FontColorAdapter extends RecyclerView.Adapter<FontColorAdapter.Font
     }
 
     /**
-     * 素材菜单holder
+     * 文字颜色holder
      */
     class FontColorHolder extends RecyclerView.ViewHolder{
 
