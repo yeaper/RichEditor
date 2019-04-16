@@ -11,10 +11,12 @@ import android.support.annotation.IntRange;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 
 import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.interfaces.AfterInitialLoadListener;
@@ -22,6 +24,7 @@ import com.zjrb.editor.interfaces.OnDecorationStateListener;
 import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.utils.ImageUtils;
+import com.zjrb.editor.widget.EditorOpMenuView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -121,6 +124,24 @@ public class RichEditor extends WebView {
     }
 
     /**
+     * 其他输入框拿到光标
+     *
+     * @param editTexts 其他输入框
+     */
+    public void hideWhenViewFocused(EditText... editTexts) {
+        for(EditText editText: editTexts) {
+            editText.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (mOnEditorFocusListener != null && hasFocus) {
+                        mOnEditorFocusListener.onEditorFocus(false);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
      * 漏洞处理
      */
     private void handleLeaks() {
@@ -210,7 +231,7 @@ public class RichEditor extends WebView {
             mDecorationStateListener.onStateChange(state, types);
         }
         if (mOnEditorFocusListener != null) {
-            mOnEditorFocusListener.onEditorFocus();
+            mOnEditorFocusListener.onEditorFocus(true);
         }
     }
 

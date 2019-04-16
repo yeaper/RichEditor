@@ -6,5 +6,9 @@ package com.zjrb.editor.interfaces;
  * Created by yyp on 2019.04.16
  */
 public interface OnEditorFocusListener {
-    void onEditorFocus();
+    /**
+     *
+     * @param isFocus 是否有焦点
+     */
+    void onEditorFocus(boolean isFocus);
 }

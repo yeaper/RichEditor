@@ -13,9 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -45,6 +45,8 @@ import java.util.List;
 public class EditorOpMenuView extends FrameLayout implements View.OnClickListener {
 
     private final static String TAG = "EditorOpMenuView";
+
+    private InputMethodManager imm;
 
     private Context mContext;
     private RichEditor mRichEditor;
@@ -103,6 +105,8 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
      * @param context
      */
     private void initView(Context context) {
+        imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
         View view = LayoutInflater.from(context).inflate(R.layout.module_editor_layout_editor_op_menu, null);
         mBoldView = view.findViewById(R.id.editor_action_bold);
         mItalicView = view.findViewById(R.id.editor_action_italic);
@@ -202,22 +206,6 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             cookieManager.setAcceptThirdPartyCookies(webView, true);
         }
-    }
-
-    /**
-     * 其他输入框拿到光标后，菜单隐藏
-     *
-     * @param editText 其他输入框
-     */
-    public void hideWhenViewFocused(EditText editText) {
-        editText.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    EditorOpMenuView.this.setVisibility(GONE);
-                }
-            }
-        });
     }
 
     /**
@@ -509,6 +497,9 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
             if (mMaterialsMenuView.getVisibility() == View.VISIBLE) {
                 mMaterialsMenuView.setVisibility(View.GONE);
             } else {
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0); // 强制隐藏键盘
+                }
                 mMaterialsMenuView.setVisibility(View.VISIBLE);
             }
         }
