@@ -349,6 +349,14 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     private void setForeColorSelect(@ColorInt int color) {
         mTextColorView.setTag(color);
         mTextColorView.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        //对应文字颜色集合中设置为选中
+        for(FontColorBean colorBean : generateColors()){
+            if(colorBean.getColor() == color){
+                colorBean.setSelect(true);
+            }else{
+                colorBean.setSelect(false);
+            }
+        }
     }
 
     /**
@@ -360,6 +368,14 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         mTextSizeView.setTag(size);
         String[] fontSizeArr = getResources().getStringArray(R.array.editor_font_size_arr);
         mTextSizeView.setText(fontSizeArr[size - 1]); //size-1 因为fontSizeArr从0开始的
+        //对应文字大小集合中设置为选中
+        for(FontSizeBean sizeBean : generateFontSizes()){
+            if(sizeBean.getSize() == size){
+                sizeBean.setSelect(true);
+            }else{
+                sizeBean.setSelect(false);
+            }
+        }
     }
 
     /**
@@ -378,8 +394,6 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
                         }
                         //改变菜单图标的文字大小
                         setFontSizeSelect(bean.getSize());
-                        //对应文字大小集合中设置为选中
-                        mFontSizeBeans.get(pos).setSelect(true);
                     }
                 }).show();
     }
@@ -400,8 +414,6 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
                         }
                         //改变菜单图标的颜色
                         setForeColorSelect(bean.getColor());
-                        //对应颜色集合中设置为选中
-                        mFontColorBeans.get(pos).setSelect(true);
                     }
                 }).show();
     }
@@ -444,7 +456,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
             FontSizeBean bean = new FontSizeBean(i + 1, fontSizes[i], false);
             mFontSizeBeans.add(bean);
         }
-        mFontSizeBeans.get(3).setSelect(true); //默认19px选中
+        mFontSizeBeans.get(2).setSelect(true); //默认16px选中
         return mFontSizeBeans;
     }
 

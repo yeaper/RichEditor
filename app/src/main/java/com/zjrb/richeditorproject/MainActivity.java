@@ -25,10 +25,8 @@ public class MainActivity extends AppCompatActivity {
         mEditorOpMenuView = findViewById(R.id.editor_op_menu_view);
 
         //默认格式
-        mEditor.setEditorFontSize(19); //19px
-        mEditor.setEditorFontColor(Color.BLACK);
+        mEditor.setEditorFontSize(16); //16px
         mEditor.setEditorHeight(300);
-        mEditor.setBackgroundColor(Color.WHITE);
         mEditor.setPadding(10, 10, 10, 10);
         mEditor.setPlaceholder("请填写文章正文内容（必填）");
 

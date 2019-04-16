@@ -647,6 +647,7 @@ public class RichEditor extends WebView {
 
             if (TextUtils.indexOf(url, CALLBACK_SCHEME) == 0) {
                 callback(decode);
+                exec("javascript:RE.refreshEditingItems();"); //输入改变，需要刷新返回各个配置的状态
                 return true;
             } else if (TextUtils.indexOf(url, STATE_SCHEME) == 0) {
                 stateCheck(decode);

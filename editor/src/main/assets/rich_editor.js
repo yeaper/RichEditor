@@ -19,6 +19,10 @@ RE.callback = function() {
     window.location.href = "re-callback://" + encodeURI(RE.getHtml());
 }
 
+RE.refreshEditingItems = function() {
+    RE.enabledEditingItems();
+}
+
 RE.setHtml = function(contents) {
     RE.editor.innerHTML = decodeURIComponent(contents.replace(/\+/g, '%20')); //先把所有+替换为%20(空格符)
 }
