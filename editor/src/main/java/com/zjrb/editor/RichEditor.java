@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.interfaces.AfterInitialLoadListener;
 import com.zjrb.editor.interfaces.OnDecorationStateListener;
+import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.utils.ImageUtils;
 
@@ -31,7 +32,7 @@ import java.util.Locale;
 
 /**
  * 富文本编辑器
- *
+ * <p>
  * Created by yyp on 2019/02/25.
  */
 public class RichEditor extends WebView {
@@ -46,6 +47,7 @@ public class RichEditor extends WebView {
     private String mContents;
     private OnTextChangeListener mTextChangeListener;
     private OnDecorationStateListener mDecorationStateListener;
+    private OnEditorFocusListener mOnEditorFocusListener;
     private AfterInitialLoadListener mLoadListener;
 
     public RichEditor(Context context) {
@@ -91,9 +93,22 @@ public class RichEditor extends WebView {
         mTextChangeListener = listener;
     }
 
-
+    /**
+     * 设置编辑器状态改变监听
+     *
+     * @param listener .
+     */
     public void setOnDecorationChangeListener(OnDecorationStateListener listener) {
         mDecorationStateListener = listener;
+    }
+
+    /**
+     * 设置编辑器焦点监听
+     *
+     * @param onEditorFocusListener .
+     */
+    public void setOnEditorFocusListener(OnEditorFocusListener onEditorFocusListener) {
+        this.mOnEditorFocusListener = onEditorFocusListener;
     }
 
     /**
@@ -108,7 +123,7 @@ public class RichEditor extends WebView {
     /**
      * 漏洞处理
      */
-    private void handleLeaks(){
+    private void handleLeaks() {
         // 4.4以下 清除接口引起的远程代码执行漏洞
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             removeJavascriptInterface("searchBoxJavaBridge_");
@@ -117,7 +132,7 @@ public class RichEditor extends WebView {
         }
 
         WebSettings webSettings = getSettings();
-        if(webSettings != null){
+        if (webSettings != null) {
             // 需要使用 file 协议
             webSettings.setAllowFileAccess(true);
             // 不允许通过 file url 加载的js代码读取其他的本地文件
@@ -193,6 +208,9 @@ public class RichEditor extends WebView {
 
         if (mDecorationStateListener != null) {
             mDecorationStateListener.onStateChange(state, types);
+        }
+        if (mOnEditorFocusListener != null) {
+            mOnEditorFocusListener.onEditorFocus();
         }
     }
 
@@ -480,7 +498,7 @@ public class RichEditor extends WebView {
      *
      * @param fontSize 文字大小 1-7
      */
-    public void setFontSize(@IntRange(from = 1, to = 7)int fontSize) {
+    public void setFontSize(@IntRange(from = 1, to = 7) int fontSize) {
         exec("javascript:RE.setFontSize('" + fontSize + "');");
     }
 
@@ -577,7 +595,7 @@ public class RichEditor extends WebView {
     /**
      * 插入链接
      *
-     * @param href 链接
+     * @param href  链接
      * @param title 链接说明
      */
     public void insertLink(String href, String title) {

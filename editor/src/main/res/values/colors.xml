@@ -6,6 +6,7 @@
     <color name="_f9f9f9">#f9f9f9</color>
     <color name="_d8d8d8">#d8d8d8</color>
     <color name="_f0f0f0">#f0f0f0</color>
+    <color name="_cfcfcf">#cfcfcf</color>
 
     <!-- 编辑器文字颜色 -->
     <integer-array name="editor_font_color">

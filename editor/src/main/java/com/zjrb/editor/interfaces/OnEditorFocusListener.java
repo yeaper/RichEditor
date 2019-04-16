@@ -1,0 +1,10 @@
+package com.zjrb.editor.interfaces;
+
+/**
+ * 编辑器获取焦点回调
+ *
+ * Created by yyp on 2019.04.16
+ */
+public interface OnEditorFocusListener {
+    void onEditorFocus();
+}
