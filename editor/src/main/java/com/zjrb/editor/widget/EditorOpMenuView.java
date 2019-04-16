@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -30,6 +31,7 @@ import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.config.MaterialsMenuType;
 import com.zjrb.editor.interfaces.OnColorSelectListener;
 import com.zjrb.editor.interfaces.OnDecorationStateListener;
+import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnFontSizeSelectListener;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.utils.ImageUtils;
@@ -194,6 +196,15 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
      */
     public void setOnMaterialsItemClickListener(OnMaterialsItemClickListener onMaterialsItemClickListener) {
         this.mOnMaterialsItemClickListener = onMaterialsItemClickListener;
+    }
+
+    /**
+     * 处理展示素材菜单
+     *
+     * @param isShow 是否显示
+     */
+    public void displayMaterialsMenuView(boolean isShow){
+        mMaterialsMenuView.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -495,12 +506,12 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         }
         if (id == R.id.editor_action_materials) { //点击素材按钮
             if (mMaterialsMenuView.getVisibility() == View.VISIBLE) {
-                mMaterialsMenuView.setVisibility(View.GONE);
+                displayMaterialsMenuView(false);
             } else {
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0); // 强制隐藏键盘
                 }
-                mMaterialsMenuView.setVisibility(View.VISIBLE);
+                displayMaterialsMenuView(true);
             }
         }
     }
