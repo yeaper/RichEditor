@@ -69,7 +69,7 @@ public class FontSizeSelectDialog extends AlertDialog implements View.OnClickLis
                 R.layout.module_editor_layout_bottom_list_dialog, null);
         mTitle = mView.findViewById(R.id.tv_bottom_dialog_title);
         mCancel = mView.findViewById(R.id.tv_bottom_dialog_cancel);
-        mRvFontSize = mView.findViewById(R.id.rv_bottom_dialog);
+        mRvFontSize = mView.findViewById(R.id.rv_bottom_dialog_list);
 
         mCancel.setOnClickListener(this);
     }
@@ -112,6 +112,8 @@ public class FontSizeSelectDialog extends AlertDialog implements View.OnClickLis
      */
     private void initFontSizeView(List<FontSizeBean> fontSizeBeans){
         mRvFontSize.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRvFontSize.addItemDecoration(new ListSpaceDivider(1, R.color._f0f0f0,
+                10, 0, true, false, true)); //分割线
         mFontSizeAdapter = new FontSizeAdapter(fontSizeBeans);
         mRvFontSize.setAdapter(mFontSizeAdapter);
         mFontSizeAdapter.setOnFontSizeSelectListener(new OnFontSizeSelectListener() {

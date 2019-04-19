@@ -70,7 +70,7 @@ public class ColorSelectDialog extends AlertDialog implements View.OnClickListen
                 R.layout.module_editor_layout_bottom_list_dialog, null);
         mTitle = mView.findViewById(R.id.tv_bottom_dialog_title);
         mCancel = mView.findViewById(R.id.tv_bottom_dialog_cancel);
-        mRvColor = mView.findViewById(R.id.rv_bottom_dialog);
+        mRvColor = mView.findViewById(R.id.rv_bottom_dialog_list);
 
         mCancel.setOnClickListener(this);
     }
