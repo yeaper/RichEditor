@@ -1,12 +1,12 @@
 package com.zjrb.richeditorproject;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.zjrb.editor.RichEditor;
 import com.zjrb.editor.bean.MaterialsMenuBean;
+import com.zjrb.editor.config.MaterialsMenuType;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.widget.EditorOpMenuView;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mEditorOpMenuView.initMaterialsMenuView(MaterialsMenuType.TYPE_IMAGE);
         mEditorOpMenuView.setRichEditor(mEditor);
         //监听素材菜单点击事件
         mEditorOpMenuView.setOnMaterialsItemClickListener(new OnMaterialsItemClickListener() {

@@ -10,7 +10,12 @@ public enum MaterialsMenuType {
     MATERIALS_VIDEO(1),
     MATERIALS_TXT(2),
     LOCAL_IMAGE(3),
-    LOCAL_VIDEO(4);
+    LOCAL_VIDEO(4),
+
+    //三种大的类型
+    TYPE_IMAGE(5),
+    TYPE_VIDEO(6),
+    TYPE_ALL(7);
 
     int value;
 

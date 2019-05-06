@@ -8,7 +8,6 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -31,13 +30,13 @@ import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.config.MaterialsMenuType;
 import com.zjrb.editor.interfaces.OnColorSelectListener;
 import com.zjrb.editor.interfaces.OnDecorationStateListener;
-import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnFontSizeSelectListener;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * 富文本编辑器的菜单
@@ -144,36 +143,60 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         ImageUtils.setTintList(mAlignRightView.getDrawable(), sColorStateList);
         ImageUtils.setTintList(mAlignCenterView.getDrawable(), sColorStateList);
 
-        initMaterialsMenuView();
         addView(view);
     }
 
     /**
      * 初始化素材菜单
      */
-    private void initMaterialsMenuView() {
+    public void initMaterialsMenuView(MaterialsMenuType type) {
         //增加素材菜单item
         List<MaterialsMenuBean> materialsMenuBeans = new ArrayList<>();
-        materialsMenuBeans.add(new MaterialsMenuBean(
-                MaterialsMenuType.MATERIALS_IMAGE,
-                R.drawable.module_editor_ic_materials_image,
-                mContext.getResources().getString(R.string.editor_materials_img)));
-        materialsMenuBeans.add(new MaterialsMenuBean(
-                MaterialsMenuType.MATERIALS_VIDEO,
-                R.drawable.module_editor_ic_materials_video,
-                mContext.getResources().getString(R.string.editor_materials_video)));
-        materialsMenuBeans.add(new MaterialsMenuBean(
-                MaterialsMenuType.MATERIALS_TXT,
-                R.drawable.module_editor_ic_materials_txt,
-                mContext.getResources().getString(R.string.editor_materials_txt)));
-        materialsMenuBeans.add(new MaterialsMenuBean(
-                MaterialsMenuType.LOCAL_IMAGE,
-                R.drawable.module_editor_ic_local_image,
-                mContext.getResources().getString(R.string.editor_local_img)));
-        materialsMenuBeans.add(new MaterialsMenuBean(
-                MaterialsMenuType.LOCAL_VIDEO,
-                R.drawable.module_editor_ic_local_video,
-                mContext.getResources().getString(R.string.editor_local_video)));
+        switch (type){
+            case TYPE_ALL: //支持全类型
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.MATERIALS_IMAGE,
+                        R.drawable.module_editor_ic_materials_image,
+                        mContext.getResources().getString(R.string.editor_materials_img)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.MATERIALS_VIDEO,
+                        R.drawable.module_editor_ic_materials_video,
+                        mContext.getResources().getString(R.string.editor_materials_video)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.MATERIALS_TXT,
+                        R.drawable.module_editor_ic_materials_txt,
+                        mContext.getResources().getString(R.string.editor_materials_txt)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.LOCAL_IMAGE,
+                        R.drawable.module_editor_ic_local_image,
+                        mContext.getResources().getString(R.string.editor_local_img)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.LOCAL_VIDEO,
+                        R.drawable.module_editor_ic_local_video,
+                        mContext.getResources().getString(R.string.editor_local_video)));
+                break;
+            case TYPE_IMAGE: //支持图片类型
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.MATERIALS_IMAGE,
+                        R.drawable.module_editor_ic_materials_image,
+                        mContext.getResources().getString(R.string.editor_materials_img)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.LOCAL_IMAGE,
+                        R.drawable.module_editor_ic_local_image,
+                        mContext.getResources().getString(R.string.editor_local_img)));
+                break;
+            case TYPE_VIDEO: //支持视频类型
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.MATERIALS_VIDEO,
+                        R.drawable.module_editor_ic_materials_video,
+                        mContext.getResources().getString(R.string.editor_materials_video)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.LOCAL_VIDEO,
+                        R.drawable.module_editor_ic_local_video,
+                        mContext.getResources().getString(R.string.editor_local_video)));
+                break;
+        }
+
         mMaterialsMenuAdapter = new MaterialsMenuAdapter(materialsMenuBeans);
         mMaterialsMenuView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mMaterialsMenuView.setAdapter(mMaterialsMenuAdapter);
@@ -204,6 +227,9 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
      * @param isShow 是否显示
      */
     public void displayMaterialsMenuView(boolean isShow){
+        if(mMaterialsMenuAdapter == null){
+            initMaterialsMenuView(MaterialsMenuType.TYPE_ALL); //不设置的默认全类型
+        }
         mMaterialsMenuView.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
