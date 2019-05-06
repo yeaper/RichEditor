@@ -273,6 +273,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
                                 break;
                         }
                     }
+
                     setBoldSelect(isBold);
                     setItalicSelect(isItalic);
                     setUnderlineSelect(isUnderLine);
@@ -283,7 +284,7 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     }
 
     /**
-     * 4个对齐方式互斥
+     * 3个对齐方式互斥
      *
      * @param id 对齐方式按钮id
      */

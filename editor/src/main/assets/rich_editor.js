@@ -121,7 +121,13 @@ RE.setBullets = function() {
 }
 
 RE.setNumbers = function() {
-    document.execCommand('insertOrderedList', false, null);
+    if(!document.queryCommandValue('insertOrderedList')){
+        document.execCommand('insertOrderedList', false, true);
+    }else{
+        //清除有序列表时，先回到左对齐状态，再清除，不然对齐状态会出错
+        RE.setJustifyLeft();
+        document.execCommand('insertOrderedList', false, false);
+    }
 }
 
 RE.setTextColor = function(color) {
@@ -281,7 +287,7 @@ RE.enabledEditingItems = function(e) {
     if (foreColor.length > 0) {
         items.push('foreColor' + colorRGB2Hex(foreColor));
     }
-    //返回文字大小 如：foreColor6
+    //返回文字大小 如：foreSize6
     var fontSize = document.queryCommandValue('fontSize');
     if (fontSize.length > 0) {
         items.push('fontSize' + fontSize);
