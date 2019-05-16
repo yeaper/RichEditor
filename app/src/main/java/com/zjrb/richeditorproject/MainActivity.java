@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -14,6 +15,7 @@ import com.zjrb.editor.RichEditor;
 import com.zjrb.editor.bean.MaterialsMenuBean;
 import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
+import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.widget.EditorOpMenuView;
 import com.zjrb.resource.bean.MaterialsFile;
 import com.zjrb.resource.selector.ResourceSelector;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mEditor.setEditorFontSize(16);
         mEditor.setPadding(10, 10, 10, 10);
         mEditor.setBackgroundColor(UIUtils.getResources().getColor(R.color._ffffff));
+        mEditor.hideWhenViewFocused((EditText) findViewById(R.id.et_title));
         mEditor.setOnEditorFocusListener(new OnEditorFocusListener() {
             @Override
             public void onEditorFocus(boolean isFocus) {
@@ -53,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     mEditorOpMenuView.setVisibility(View.GONE);
                 }
+            }
+        });
+        mEditor.setOnTextChangeListener(new OnTextChangeListener() {
+            @Override
+            public void onTextChange(String text) {
+                text.length();
             }
         });
         //绑定编辑器

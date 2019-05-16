@@ -296,9 +296,6 @@ RE.editor.addEventListener("keyup", function(e) {
     }
 });
 
-// 光标改变事件监听
-document.addEventListener("selectionchange", RE.enabledEditingItems);
-
 // 点击事件监听
 RE.editor.addEventListener("click", RE.enabledEditingItems);
 
