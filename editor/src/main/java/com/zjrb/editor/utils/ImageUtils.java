@@ -92,6 +92,10 @@ public class ImageUtils {
 
     /**
      * dip转换px
+     *
+     * @param context
+     * @param dip
+     * @return
      */
     public static int dip2px(Context context, float dip) {
         final float scale = context.getResources().getDisplayMetrics().density;

@@ -24,7 +24,6 @@ import com.zjrb.editor.interfaces.OnDecorationStateListener;
 import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.utils.ImageUtils;
-import com.zjrb.editor.widget.EditorOpMenuView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -76,6 +75,14 @@ public class RichEditor extends WebView {
         loadUrl(SETUP_HTML);
 
         applyAttributes(context, attrs);
+
+        //设置输入框高度
+        this.post(new Runnable() {
+            public void run() {
+                int height = RichEditor.this.getHeight();
+                RichEditor.this.setEditorHeight(height);
+            }
+        });
     }
 
     /**
@@ -289,6 +296,38 @@ public class RichEditor extends WebView {
      */
     public void clearFocusEditor() {
         exec("javascript:RE.blurFocus();");
+    }
+
+    /**
+     * 插入html
+     *
+     * @param html html内容
+     */
+    public void insertHtml(String html) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.insertHTML('" + html + "');");
+    }
+
+    /**
+     * 插入图片
+     *
+     * @param url 图片url
+     * @param alt 图片描述
+     */
+    public void insertImage(String url, String alt) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.insertImage('" + url + "', '" + alt + "');");
+    }
+
+    /**
+     * 插入链接
+     *
+     * @param href  链接
+     * @param title 链接说明
+     */
+    public void insertLink(String href, String title) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.insertLink('" + href + "', '" + title + "');");
     }
 
     /**
@@ -600,28 +639,6 @@ public class RichEditor extends WebView {
      */
     public void setNumbers() {
         exec("javascript:RE.setNumbers();");
-    }
-
-    /**
-     * 插入图片
-     *
-     * @param url 图片url
-     * @param alt 图片描述
-     */
-    public void insertImage(String url, String alt) {
-        exec("javascript:RE.prepareInsert();");
-        exec("javascript:RE.insertImage('" + url + "', '" + alt + "');");
-    }
-
-    /**
-     * 插入链接
-     *
-     * @param href  链接
-     * @param title 链接说明
-     */
-    public void insertLink(String href, String title) {
-        exec("javascript:RE.prepareInsert();");
-        exec("javascript:RE.insertLink('" + href + "', '" + title + "');");
     }
 
     /**

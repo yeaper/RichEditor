@@ -4,14 +4,6 @@
 
 var RE = {};
 
-// 默认光标位置
-RE.currentSelection = {
-    "startContainer": 0,
-    "startOffset": 0,
-    "endContainer": 0,
-    "endOffset": 0
-};
-
 RE.editor = document.getElementById('editor');
 
 // 回调html内容
@@ -131,14 +123,12 @@ RE.setNumbers = function() {
 }
 
 RE.setTextColor = function(color) {
-    RE.restorerange();
     document.execCommand("styleWithCSS", null, true);
     document.execCommand('foreColor', false, color);
     document.execCommand("styleWithCSS", null, false);
 }
 
 RE.setTextBackgroundColor = function(color) {
-    RE.restorerange();
     document.execCommand("styleWithCSS", null, true);
     document.execCommand('hiliteColor', false, color);
     document.execCommand("styleWithCSS", null, false);
@@ -181,17 +171,19 @@ RE.setBlockquote = function() {
 }
 
 RE.insertImage = function(url, alt) {
-    var html = '<img src="' + url + '" alt="' + alt + '" />';
+    var html = '<img src="' + url + '" alt="' + alt + '" width="100%%" height="auto" />';
     RE.insertHTML(html);
 }
 
 RE.insertHTML = function(html) {
-    RE.restorerange();
-    document.execCommand('insertHTML', false, html);
+    if(document.selection)
+        document.createRange().pasteHTML(html);
+    else{
+        document.execCommand('insertHTML', false, html);
+    }
 }
 
 RE.insertLink = function(url, title) {
-    RE.restorerange();
     var sel = document.getSelection();
     if (sel.toString().length == 0) {
         document.execCommand("insertHTML",false,"<a href='"+url+"'>"+title+"</a>");
@@ -210,30 +202,6 @@ RE.insertLink = function(url, title) {
 
 // 准备插入内容前进行光标备份
 RE.prepareInsert = function() {
-    RE.backuprange();
-}
-
-// 备份光标
-RE.backuprange = function(){
-    var selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-        var range = selection.getRangeAt(0);
-        RE.currentSelection = {
-            "startContainer": range.startContainer,
-            "startOffset": range.startOffset,
-            "endContainer": range.endContainer,
-            "endOffset": range.endOffset};
-    }
-}
-
-// 恢复光标
-RE.restorerange = function(){
-    var selection = window.getSelection();
-    selection.removeAllRanges();
-    var range = document.createRange();
-    range.setStart(RE.currentSelection.startContainer, RE.currentSelection.startOffset);
-    range.setEnd(RE.currentSelection.endContainer, RE.currentSelection.endOffset);
-    selection.addRange(range);
 }
 
 // 记录选择的操作并返回
@@ -316,11 +284,6 @@ RE.blurFocus = function() {
 RE.removeFormat = function() {
     document.execCommand('removeFormat', false, null);
 }
-
-// 光标改变事件监听
-document.addEventListener("selectionchange", function() {
-    RE.backuprange();
-});
 
 // 输入事件监听
 RE.editor.addEventListener("input", RE.callback);

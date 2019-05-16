@@ -18,7 +18,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        maven { url "http://10.100.62.98:8086/nexus/content/groups/public" }
     }
 }
 
