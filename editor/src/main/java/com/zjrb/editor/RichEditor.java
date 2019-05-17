@@ -136,7 +136,7 @@ public class RichEditor extends WebView {
      * @param editTexts 其他输入框
      */
     public void hideWhenViewFocused(EditText... editTexts) {
-        for(EditText editText: editTexts) {
+        for (EditText editText : editTexts) {
             editText.setOnFocusChangeListener(new OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -317,6 +317,26 @@ public class RichEditor extends WebView {
     public void insertImage(String url, String alt) {
         exec("javascript:RE.prepareInsert();");
         exec("javascript:RE.insertImage('" + url + "', '" + alt + "');");
+    }
+
+    /**
+     * 插入视频第一帧
+     *
+     * @param frameUrl  帧图片url
+     * @param videoId   视频id
+     * @param videoName 视频文件名
+     * @param size      视频大小
+     */
+    public void insertVideoFrame(String frameUrl, long videoId, String videoName, long size) {
+        exec("javascript:RE.prepareInsert();");
+        @SuppressLint("DefaultLocale")
+        String html = String.format("<img src=\"%s\" " +
+                        "videoid=\"%d\" alt=\"\" " +
+                        "controls=\"controls\" " +
+                        "resourcetype=\"video/mp4\" " +
+                        "filename=\"%s\" filesize=\"%d\" />",
+                frameUrl, videoId, videoName, size);
+        exec("javascript:RE.insertHTML('" + html + "');");
     }
 
     /**

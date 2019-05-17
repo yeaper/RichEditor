@@ -133,14 +133,8 @@ public class MainActivity extends AppCompatActivity {
                 case REQUEST_CODE_MATERIALS_VIDEO:
                     List<MaterialsFile> materialsVideos = ResourceSelector.obtainMultipleResult(data);
                     for(MaterialsFile file : materialsVideos){
-                        String html = String.format("<img src=\"%s\" " +
-                                        "videoid=\"%d\" alt=\"\" " +
-                                        "style=\"width:100%%;height:auto;\" " +
-                                        "controls=\"controls\" " +
-                                        "resourcetype=\"video/mp4\" " +
-                                        "filename=\"%s\" filesize=\"%d\" />",
-                                file.getThumbUrl(), file.getId(), file.getName(), file.getSize());
-                        mEditor.insertHtml(html); //插入视频到编辑器
+                        mEditor.insertVideoFrame("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1173732030,451788635&fm=26&gp=0.jpg",
+                                file.getVideoId(), file.getName(), file.getSize()); //插入视频到编辑器
                     }
                     break;
                 case REQUEST_CODE_MATERIALS_TXT:

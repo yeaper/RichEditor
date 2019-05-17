@@ -171,16 +171,12 @@ RE.setBlockquote = function() {
 }
 
 RE.insertImage = function(url, alt) {
-    var html = '<img src="' + url + '" alt="' + alt + '" width="100%%" height="auto" />';
+    var html = '<img src="' + url + '" alt="' + alt + '" />';
     RE.insertHTML(html);
 }
 
 RE.insertHTML = function(html) {
-    if(document.selection)
-        document.createRange().pasteHTML(html);
-    else{
-        document.execCommand('insertHTML', false, html);
-    }
+    document.execCommand('insertHTML', false, html);
 }
 
 RE.insertLink = function(url, title) {
@@ -200,30 +196,8 @@ RE.insertLink = function(url, title) {
     RE.callback();
 }
 
-// 默认光标位置
-RE.currentSelection = {
-    "startContainer": 0,
-    "startOffset": 0,
-    "endContainer": 0,
-    "endOffset": 0
-};
-
 // 准备插入内容前进行光标备份
 RE.prepareInsert = function() {
-    RE.backuprange();
-}
-
-// 备份光标
-RE.backuprange = function(){
-    var selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-        var range = selection.getRangeAt(0);
-        RE.currentSelection = {
-            "startContainer": range.startContainer,
-            "startOffset": range.startOffset,
-            "endContainer": range.endContainer,
-            "endOffset": range.endOffset};
-    }
 }
 
 // 记录选择的操作并返回
@@ -309,11 +283,6 @@ RE.removeFormat = function() {
 
 // 输入事件监听
 RE.editor.addEventListener("input", RE.callback);
-
-// 光标改变事件监听
-document.addEventListener("selectionchange", function() {
-    RE.backuprange();
-});
 
 // 按键松开事件监听
 RE.editor.addEventListener("keyup", function(e) {

@@ -18,23 +18,23 @@
 
 
 html {
-  height: 100%;
+  width: 100%;
   height: auto;
 }
 
 body {
-  overflow: scroll;
-  display: table;
-  table-layout: fixed;
-  width: 100%%;
-  height: auto;
+    overflow: scroll;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    height: auto;
 }
 
-IMAGE,img,video{
-    width: 100%% !important;
+/* 图片和视频：宽度占满，高度自适应，下边距3px */
+IMAGE,img,video {
+    width: 100% !important;
     height: auto;
-    margin: 0px 0px 5px 0px !important;
-    text-align: center !important;
+    margin: 0px 0px 3px 0px !important;
 }
 
 #editor {
