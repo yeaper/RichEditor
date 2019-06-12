@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
+import com.core.network.ApiCallManager;
+import com.core.network.callback.ApiCallback;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -17,8 +19,13 @@ import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.widget.EditorOpMenuView;
+import com.zjrb.me.bizcore.network.compatible.ProgressCallBack;
+import com.zjrb.resource.bean.DataPackage;
 import com.zjrb.resource.bean.MaterialsFile;
 import com.zjrb.resource.selector.ResourceSelector;
+import com.zjrb.resource.uploadfile.image.ImageUploadEntity;
+import com.zjrb.resource.uploadfile.image.UpLoadImageTask;
+import com.zjrb.resource.uploadfile.video.GetMediaFrameTask;
 
 import java.util.List;
 
@@ -119,6 +126,74 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 请求视频第一帧
+     *
+     * @param files 素材库视频文件
+     */
+    private void getVideoFrame(List<MaterialsFile> files){
+        if(files.isEmpty()){
+            return;
+        }
+
+        for(final MaterialsFile file: files){
+            if(file == null){
+                continue;
+            }
+
+            new GetMediaFrameTask(new ApiCallback<DataPackage<MaterialsFile>>() {
+                @Override
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onError(String errMsg, int errCode) {
+                }
+
+                @Override
+                public void onSuccess(DataPackage<MaterialsFile> data) {
+                    if(data != null && data.getCode() == 0 && data.getData() != null){
+                        mEditor.insertVideoFrame(data.getData().getThumbUrl(),
+                                file.getVideoId(), file.getName(), file.getSize()); //插入视频到编辑器
+                    }
+                }
+            }).setTag(this).exe(file.getVideoId());
+        }
+    }
+
+    /**
+     * 上传本地图片
+     *
+     * @param files 本地图片文件
+     */
+    private void uploadImg(final List<LocalMedia> files){
+        if(files.isEmpty()){
+            return;
+        }
+
+        for(final LocalMedia file : files){
+            if(file == null){
+                continue;
+            }
+
+            new UpLoadImageTask(new ProgressCallBack<ImageUploadEntity>() {
+
+                @Override
+                public void onError(String errMsg, int errCode) {
+                    super.onError(errMsg, errCode);
+                }
+
+                @Override
+                public void onSuccess(ImageUploadEntity data) {
+                    if (data != null) {
+                        mEditor.insertImage(data.getSrc(), data.getName()); //插入图片到编辑器
+                    }
+                }
+            }).setTag(MainActivity.this).putFile("file", file.getPath()).exe();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -132,10 +207,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case REQUEST_CODE_MATERIALS_VIDEO:
                     List<MaterialsFile> materialsVideos = ResourceSelector.obtainMultipleResult(data);
-                    for(MaterialsFile file : materialsVideos){
-                        mEditor.insertVideoFrame("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1173732030,451788635&fm=26&gp=0.jpg",
-                                file.getVideoId(), file.getName(), file.getSize()); //插入视频到编辑器
-                    }
+                    getVideoFrame(materialsVideos);
                     break;
                 case REQUEST_CODE_MATERIALS_TXT:
                     List<MaterialsFile> materialsTxts = ResourceSelector.obtainMultipleResult(data);
@@ -148,11 +220,18 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case REQUEST_CODE_LOCAL_IMG:
                     List<LocalMedia> localImgs = PictureSelector.obtainMultipleResult(data);
+                    uploadImg(localImgs);
                     break;
                 case REQUEST_CODE_LOCAL_VIDEO:
                     List<LocalMedia> localVideos = PictureSelector.obtainMultipleResult(data);
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ApiCallManager.get().cancel(MainActivity.this);
     }
 }

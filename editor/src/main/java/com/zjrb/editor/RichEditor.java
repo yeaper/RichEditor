@@ -12,18 +12,24 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
+import com.zjrb.core.utils.UIUtils;
 import com.zjrb.editor.config.EditorOpType;
 import com.zjrb.editor.interfaces.AfterInitialLoadListener;
 import com.zjrb.editor.interfaces.OnDecorationStateListener;
 import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.utils.ImageUtils;
+import com.zjrb.me.bizcore.network.cookie.PersistentCookieStore;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -72,6 +78,12 @@ public class RichEditor extends WebView {
         getSettings().setJavaScriptEnabled(true);
         setWebChromeClient(new WebChromeClient());
         setWebViewClient(createWebViewClient());
+        //打开cookie
+        android.webkit.CookieManager cookieManager = android.webkit.CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.setAcceptThirdPartyCookies(this, true);
+        }
         loadUrl(SETUP_HTML);
 
         applyAttributes(context, attrs);
@@ -665,6 +677,19 @@ public class RichEditor extends WebView {
      * WebViewClient相关处理
      */
     protected class EditorWebViewClient extends WebViewClient {
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            CookieSyncManager.createInstance(getContext());
+            CookieManager cookieManager = CookieManager.getInstance();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                PersistentCookieStore cookieStore = new PersistentCookieStore(UIUtils.getContext());
+                cookieManager.setCookie(request.getUrl().toString(), cookieStore.getCookiesStr());
+            }
+            CookieSyncManager.getInstance().sync();
+            return super.shouldInterceptRequest(view, request);
+        }
+
         @Override
         public void onPageFinished(WebView view, String url) {
             isReady = url.equalsIgnoreCase(SETUP_HTML); //页面加载完成
@@ -693,5 +718,7 @@ public class RichEditor extends WebView {
 
             return super.shouldOverrideUrlLoading(view, url);
         }
+
+
     }
 }

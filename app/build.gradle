@@ -24,8 +24,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     //内部模块依赖
-    implementation 'cn.daily.android:me-bizcore:0.0.0.42'
-    implementation 'cn.daily.android:me-common-core:0.0.0.23'
-    implementation 'cn.daily.android:resource:0.0.0.2'
+    implementation 'cn.daily.android:me-bizcore:0.0.0.58-SNAPSHOT'
+    implementation 'cn.daily.android:me-common-core:0.0.0.24-SNAPSHOT'
+    implementation 'cn.daily.android:resource:0.0.0.7'
     implementation project(':editor')
 }
