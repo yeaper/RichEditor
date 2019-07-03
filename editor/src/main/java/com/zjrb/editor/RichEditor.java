@@ -343,11 +343,11 @@ public class RichEditor extends WebView {
         exec("javascript:RE.prepareInsert();");
         @SuppressLint("DefaultLocale")
         String html = String.format("<img src=\"%s\" " +
-                        "videoid=\"%d\" alt=\"\" " +
+                        "videoid=\"%d\" alt=\"%s\" " +
                         "controls=\"controls\" " +
                         "resourcetype=\"video/mp4\" " +
                         "filename=\"%s\" filesize=\"%d\" />",
-                frameUrl, videoId, videoName, size);
+                frameUrl, videoId, videoName, videoName, size);
         exec("javascript:RE.insertHTML('" + html + "');");
     }
 
