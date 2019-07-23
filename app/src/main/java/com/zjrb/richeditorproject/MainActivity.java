@@ -58,11 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEditorFocus(boolean isFocus) {
                 mEditorOpMenuView.displayMaterialsMenuView(false); //编辑器重获焦点，素材菜单要隐藏
-                if(isFocus){
-                    mEditorOpMenuView.setVisibility(View.VISIBLE);
-                }else{
-                    mEditorOpMenuView.setVisibility(View.GONE);
-                }
+                mEditorOpMenuView.setVisibility(isFocus ? View.VISIBLE : View.GONE);
             }
         });
         mEditor.setOnTextChangeListener(new OnTextChangeListener() {

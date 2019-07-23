@@ -46,6 +46,6 @@ dependencies {
 
     //内部模块依赖
     implementation 'cn.daily.android:me-common-core:0.0.0.25-SNAPSHOT'
-    implementation 'cn.daily.android:me-bizcore:0.0.0.64-SNAPSHOT'
+    implementation 'cn.daily.android:me-bizcore:0.0.0.80-SNAPSHOT'
 
 }

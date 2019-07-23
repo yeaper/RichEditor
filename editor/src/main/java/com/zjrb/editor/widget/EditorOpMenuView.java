@@ -1,5 +1,6 @@
 package com.zjrb.editor.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -33,6 +34,7 @@ import com.zjrb.editor.interfaces.OnDecorationStateListener;
 import com.zjrb.editor.interfaces.OnFontSizeSelectListener;
 import com.zjrb.editor.interfaces.OnMaterialsItemClickListener;
 import com.zjrb.editor.utils.ImageUtils;
+import com.zjrb.me.bizcore.interfaces.KeyboardChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +146,22 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         ImageUtils.setTintList(mAlignCenterView.getDrawable(), sColorStateList);
 
         addView(view);
+        listen();
+    }
+
+    private void listen(){
+        //监听软键盘显隐
+        new KeyboardChangeListener((Activity) getContext()).setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
+            @Override
+            public void onKeyboardChange(boolean isShow, int keyboardHeight) {
+                if(!isShow && !getMaterialsMenuDisplayStatus()){ //键盘收起且素材菜单没显示，则隐藏操作菜单，清除编辑器焦点
+                    EditorOpMenuView.this.setVisibility(View.GONE);
+                    if(mRichEditor != null) {
+                        mRichEditor.clearFocusEditor();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -231,6 +249,18 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
             initMaterialsMenuView(MaterialsMenuType.TYPE_ALL); //不设置的默认全类型
         }
         mMaterialsMenuView.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * 获取素材菜单的显隐状态
+     *
+     * @return
+     */
+    public boolean getMaterialsMenuDisplayStatus(){
+        if(mMaterialsMenuView == null){
+            return false;
+        }
+        return mMaterialsMenuView.getVisibility() == View.VISIBLE;
     }
 
     /**

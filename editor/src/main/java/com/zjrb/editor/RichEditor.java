@@ -307,6 +307,9 @@ public class RichEditor extends WebView {
      * 编辑区清除焦点
      */
     public void clearFocusEditor() {
+        if (mOnEditorFocusListener != null) {
+            mOnEditorFocusListener.onEditorFocus(false);
+        }
         exec("javascript:RE.blurFocus();");
     }
 
