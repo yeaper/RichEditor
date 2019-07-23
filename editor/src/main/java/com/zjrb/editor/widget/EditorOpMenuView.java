@@ -574,14 +574,10 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
             setAlignSelect(R.id.editor_action_justify_center);
         }
         if (id == R.id.editor_action_materials) { //点击素材按钮
-            if (mMaterialsMenuView.getVisibility() == View.VISIBLE) {
-                displayMaterialsMenuView(false);
-            } else {
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0); // 强制隐藏键盘
-                }
-                displayMaterialsMenuView(true);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0); // 强制隐藏键盘
             }
+            displayMaterialsMenuView(true);
         }
     }
 }
