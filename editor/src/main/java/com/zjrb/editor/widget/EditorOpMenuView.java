@@ -203,6 +203,20 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
                         R.drawable.module_editor_ic_local_image,
                         mContext.getResources().getString(R.string.editor_local_img)));
                 break;
+            case TYPE_IMAGE_TXT: //图片、文字类型
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.MATERIALS_IMAGE,
+                        R.drawable.module_editor_ic_materials_image,
+                        mContext.getResources().getString(R.string.editor_materials_img)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.LOCAL_IMAGE,
+                        R.drawable.module_editor_ic_local_image,
+                        mContext.getResources().getString(R.string.editor_local_img)));
+                materialsMenuBeans.add(new MaterialsMenuBean(
+                        MaterialsMenuType.MATERIALS_TXT,
+                        R.drawable.module_editor_ic_materials_txt,
+                        mContext.getResources().getString(R.string.editor_materials_txt)));
+                break;
             case TYPE_VIDEO: //支持视频类型
                 materialsMenuBeans.add(new MaterialsMenuBean(
                         MaterialsMenuType.MATERIALS_VIDEO,
