@@ -37,6 +37,12 @@ IMAGE,img,video {
     margin: 0px 0px 3px 0px !important;
 }
 
+iframe {
+    width: 100% !important;
+    height: auto;
+    margin: 0px 0px 3px 0px !important;
+}
+
 #editor {
   display: table-cell;
   outline: 0px solid transparent;

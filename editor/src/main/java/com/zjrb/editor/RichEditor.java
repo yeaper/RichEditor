@@ -319,6 +319,9 @@ public class RichEditor extends WebView {
      * @param html html内容
      */
     public void insertHtml(String html) {
+        if(!TextUtils.isEmpty(html)){
+            html = html.replaceAll("\n", "<br>"); //编辑器不支持换行符\n
+        }
         exec("javascript:RE.prepareInsert();");
         exec("javascript:RE.insertHTML('" + html + "');");
     }
@@ -371,9 +374,10 @@ public class RichEditor extends WebView {
      * @param contents 内容
      */
     public void setHtml(String contents) {
-        if (contents == null) {
+        if (TextUtils.isEmpty(contents)) {
             contents = "";
         }
+        contents = contents.replaceAll("\n", "<br>"); //编辑器不支持换行符\n
 
         try {
             exec("javascript:RE.setHtml('" + URLEncoder.encode(contents, "UTF-8") + "');");
