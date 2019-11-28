@@ -39,8 +39,12 @@ IMAGE,img,video {
 
 iframe {
     width: 100% !important;
-    height: auto;
+    display:table;
     margin: 0px 0px 3px 0px !important;
+}
+
+section{
+    width:100%% !important;
 }
 
 #editor {
