@@ -13,10 +13,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -29,6 +26,7 @@ import com.zjrb.editor.interfaces.OnDecorationStateListener;
 import com.zjrb.editor.interfaces.OnEditorFocusListener;
 import com.zjrb.editor.interfaces.OnTextChangeListener;
 import com.zjrb.editor.utils.ImageUtils;
+import com.zjrb.me.bizcore.network.BizUrlTransform;
 import com.zjrb.me.bizcore.network.cookie.PersistentCookieStore;
 
 import java.io.UnsupportedEncodingException;
@@ -37,6 +35,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import okhttp3.Cookie;
 
 /**
  * 富文本编辑器
@@ -84,6 +84,7 @@ public class RichEditor extends WebView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             cookieManager.setAcceptThirdPartyCookies(this, true);
         }
+        addCookies(BizUrlTransform.getBaseUrl());
         loadUrl(SETUP_HTML);
 
         applyAttributes(context, attrs);
@@ -95,6 +96,22 @@ public class RichEditor extends WebView {
                 RichEditor.this.setEditorHeight(height);
             }
         });
+    }
+
+    /**
+     * 请求加token
+     * @param url
+     */
+    private void addCookies(String url){
+        CookieManager cookieManager = CookieManager.getInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.removeSessionCookies(null);
+            PersistentCookieStore cookieStore = new PersistentCookieStore(UIUtils.getContext());
+            for (Cookie cookie : cookieStore.getCookies()) { //添加cookie
+                cookieManager.setCookie(url, String.format("%s=%s", cookie.name(), cookie.value()));
+            }
+            cookieManager.flush();
+        }
     }
 
     /**
@@ -684,18 +701,6 @@ public class RichEditor extends WebView {
      * WebViewClient相关处理
      */
     protected class EditorWebViewClient extends WebViewClient {
-
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-            CookieSyncManager.createInstance(getContext());
-            CookieManager cookieManager = CookieManager.getInstance();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                PersistentCookieStore cookieStore = new PersistentCookieStore(UIUtils.getContext());
-                cookieManager.setCookie(request.getUrl().toString(), cookieStore.getCookiesStr());
-            }
-            CookieSyncManager.getInstance().sync();
-            return super.shouldInterceptRequest(view, request);
-        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
