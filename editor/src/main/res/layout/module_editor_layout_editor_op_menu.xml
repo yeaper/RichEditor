@@ -18,6 +18,24 @@
             android:scrollbars="none">
 
             <ImageButton
+                android:id="@+id/editor_action_undo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:src="@drawable/module_editor_ic_undo" />
+
+            <ImageButton
+                android:id="@+id/editor_action_redo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:src="@drawable/module_editor_ic_redo" />
+
+            <ImageButton
                 android:id="@+id/editor_action_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

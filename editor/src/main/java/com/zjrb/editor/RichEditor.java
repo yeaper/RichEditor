@@ -100,9 +100,10 @@ public class RichEditor extends WebView {
 
     /**
      * 请求加token
+     *
      * @param url
      */
-    private void addCookies(String url){
+    private void addCookies(String url) {
         CookieManager cookieManager = CookieManager.getInstance();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             cookieManager.removeSessionCookies(null);
@@ -157,6 +158,28 @@ public class RichEditor extends WebView {
      */
     public void setOnInitialLoadListener(AfterInitialLoadListener listener) {
         mLoadListener = listener;
+    }
+
+    /**
+     * 禁止编辑
+     */
+    public void disableEdit(){
+        disableLongClick(); //禁止长按
+        setOnEditorFocusListener(null); //不监听焦点，防止弹出操作菜单
+        setEdit(false); //编辑器不可编辑
+    }
+
+    /**
+     * 禁止长按
+     */
+    public void disableLongClick() {
+        setLongClickable(true);
+        setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
     }
 
     /**
@@ -310,6 +333,15 @@ public class RichEditor extends WebView {
         }
 
         ta.recycle();
+    }
+
+    /**
+     * 设置是否可编辑
+     *
+     * @param isEdit 是否可编辑
+     */
+    public void setEdit(boolean isEdit) {
+        exec("javascript:RE.setEdit('" + isEdit + "');");
     }
 
     /**

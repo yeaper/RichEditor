@@ -120,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+//        mEditor.setHtml("拔份儿发热父加好友恢复日发货人官方规划区");
+//        mEditor.disableEdit();
     }
 
     /**

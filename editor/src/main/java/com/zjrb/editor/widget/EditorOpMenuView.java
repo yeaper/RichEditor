@@ -55,6 +55,8 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     private RichEditor mRichEditor;
     private OnMaterialsItemClickListener mOnMaterialsItemClickListener;
 
+    private ImageButton mUndoView;
+    private ImageButton mRedoView;
     private ImageButton mBoldView;
     private ImageButton mItalicView;
     private ImageButton mUnderlineView;
@@ -111,6 +113,8 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         View view = LayoutInflater.from(context).inflate(R.layout.module_editor_layout_editor_op_menu, null);
+        mUndoView = view.findViewById(R.id.editor_action_undo);
+        mRedoView = view.findViewById(R.id.editor_action_redo);
         mBoldView = view.findViewById(R.id.editor_action_bold);
         mItalicView = view.findViewById(R.id.editor_action_italic);
         mUnderlineView = view.findViewById(R.id.editor_action_underline);
@@ -125,6 +129,8 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
         mMaterialsMenuView = view.findViewById(R.id.rv_editor_materials_menu);
 
         //监听点击事件
+        mUndoView.setOnClickListener(this);
+        mRedoView.setOnClickListener(this);
         mBoldView.setOnClickListener(this);
         mItalicView.setOnClickListener(this);
         mUnderlineView.setOnClickListener(this);
@@ -539,6 +545,16 @@ public class EditorOpMenuView extends FrameLayout implements View.OnClickListene
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        if (id == R.id.editor_action_undo) {
+            if (mRichEditor != null) {
+                mRichEditor.undo();
+            }
+        }
+        if (id == R.id.editor_action_redo) {
+            if (mRichEditor != null) {
+                mRichEditor.redo();
+            }
+        }
         if (id == R.id.editor_action_bold) {
             if (mRichEditor != null) {
                 mRichEditor.setBold();

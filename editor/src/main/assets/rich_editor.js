@@ -6,6 +6,11 @@ var RE = {};
 
 RE.editor = document.getElementById('editor');
 
+// 设置是否可编辑
+RE.setEdit = function(isEdit) {
+    RE.editor.contentEditable = isEdit;
+}
+
 // 回调html内容
 RE.callback = function() {
     window.location.href = "re-callback://" + encodeURI(RE.getHtml());
