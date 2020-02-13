@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     
-    <com.zjrb.editor.widget.ColorCircleView
+    <com.yyp.editor.widget.ColorCircleView
         android:id="@+id/ccv_font_color"
         android:layout_width="45dp"
         android:layout_height="45dp"

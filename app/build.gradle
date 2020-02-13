@@ -3,12 +3,10 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.zjrb.richeditorproject"
+        applicationId "com.yyp.richeditor"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
     }
@@ -27,6 +25,5 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     //内部模块依赖
-    implementation 'cn.daily.android:resource:0.0.1.84-SNAPSHOT'
     implementation project(':editor')
 }
