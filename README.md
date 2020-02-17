@@ -122,9 +122,9 @@ mEditorOpMenuView.setOnMaterialsItemClickListener(new OnMaterialsItemClickListen
 
 ## 5.遇到的问题与解决方案
 
-**问题：**编辑器展示的图片访问不了，需要传cookie验证
+**问题：** 编辑器展示的图片访问不了，需要传cookie验证
 
-**解决方案：**先前试过在WebViewClient的shouldInterceptRequest方法中，针对url设置cookie，但是cookie同步不及时，导致部分图片无法加载，后来考虑在加载图片前，先设置cookie，那么得出解决方案，先清除原来的cookie，然后为图片的ip地址设置新cookie，就可以访问了，这个方法在Webview.loadUrl()方法前调用即可。（注：android5.0以上记得打开cookie开关）
+**解决方案：** 先前试过在WebViewClient的shouldInterceptRequest方法中，针对url设置cookie，但是cookie同步不及时，导致部分图片无法加载，后来考虑在加载图片前，先设置cookie，那么得出解决方案，先清除原来的cookie，然后为图片的ip地址设置新cookie，就可以访问了，这个方法在Webview.loadUrl()方法前调用即可。（注：android5.0以上记得打开cookie开关）
 
 ```java
  //打开cookie
@@ -147,9 +147,9 @@ private void addCookies(String url) {
 }
 ```
 
-**问题：**为了方便编辑，图片、视频之间需要保持间距
+**问题：** 为了方便编辑，图片、视频之间需要保持间距
 
-**解决方案：**css样式文件中，设置margin边距即可
+**解决方案：** css样式文件中，设置margin边距即可
 
 ```css
 /* 图片和视频：宽度占满，高度自适应，下边距3px */
