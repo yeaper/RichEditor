@@ -1,5 +1,7 @@
 # 富文本编辑器说明文档
 
+![演示](https://img-blog.csdnimg.cn/20200217114034148.gif)
+
 ## 1.控件使用
 
 RichEditor是富文本编辑器，EditorOpMenuView是操作栏控件，两个需要配合使用，xml引用方式如下：
