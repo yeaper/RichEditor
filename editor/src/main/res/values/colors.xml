@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="_ffffff">#ffffff</color>
+    <color name="_222222">#222222</color>
+    <color name="_68696e">#68696e</color>
+    <color name="_f9f9f9">#f9f9f9</color>
+    <color name="_d8d8d8">#d8d8d8</color>
+    <color name="_f0f0f0">#f0f0f0</color>
+    <color name="_cfcfcf">#cfcfcf</color>
+
+    <!-- 编辑器文字颜色 -->
+    <integer-array name="editor_font_color">
+        <item>@color/picker_black</item>
+        <item>@color/picker_red</item>
+        <item>@color/picker_pink</item>
+        <item>@color/picker_purple</item>
+        <item>@color/picker_deep_purple</item>
+        <item>@color/picker_indigo</item>
+        <item>@color/picker_blue</item>
+        <item>@color/picker_light_blue</item>
+        <item>@color/picker_cyan</item>
+        <item>@color/picker_teal</item>
+        <item>@color/picker_green</item>
+        <item>@color/picker_light_green</item>
+        <item>@color/picker_lime</item>
+        <item>@color/picker_yellow</item>
+        <item>@color/picker_amber</item>
+        <item>@color/picker_orange</item>
+        <item>@color/picker_deep_orange</item>
+        <item>@color/picker_brown</item>
+        <item>@color/picker_grey</item>
+        <item>@color/picker_blue_grey</item>
+    </integer-array>
+
+    <color name="picker_black">#000000</color>
+    <color name="picker_red">#DD1F08</color>
+    <color name="picker_pink">#EB1E60</color>
+    <color name="picker_purple">#9C19B1</color>
+    <color name="picker_deep_purple">#6632B8</color>
+    <color name="picker_indigo">#3D4DB6</color>
+    <color name="picker_blue">#3493F5</color>
+    <color name="picker_light_blue">#34A6F6</color>
+    <color name="picker_cyan">#2CBBD4</color>
+    <color name="picker_teal">#199587</color>
+    <color name="picker_green">#45AF49</color>
+    <color name="picker_light_green">#88C441</color>
+    <color name="picker_lime">#CCDD1E</color>
+    <color name="picker_yellow">#FBEC13</color>
+    <color name="picker_amber">#FBC000</color>
+    <color name="picker_orange">#FB9800</color>
+    <color name="picker_deep_orange">#FF5404</color>
+    <color name="picker_brown">#795547</color>
+    <color name="picker_grey">#9D9D9D</color>
+    <color name="picker_blue_grey">#5D7B8B</color>
+</resources>

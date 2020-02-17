@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/_ffffff"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_bottom_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/_222222"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:gravity="center_horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/_f0f0f0"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_bottom_dialog_list"
+        android:layout_width="match_parent"
+        android:layout_height="204dp"
+        android:scrollbars="vertical"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@color/_cfcfcf"
+        android:overScrollMode="never" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/_f0f0f0"/>
+
+    <TextView
+        android:id="@+id/tv_bottom_dialog_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/editor_cancel"
+        android:textColor="@color/_222222"
+        android:textSize="16sp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:gravity="center_horizontal"/>
+
+</LinearLayout>

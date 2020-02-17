@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">rich_editor</string>
+    <string name="editor_default_font_size">16</string>
+    <string name="editor_select_color">选择颜色</string>
+    <string name="editor_select_font_size">选择字号</string>
+    <string name="editor_cancel">取消</string>
+
+    <!-- 文字大小 1-7 -->
+    <string-array name="editor_font_size_arr">
+        <item>10</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>24</item>
+        <item>32</item>
+        <item>48</item>
+    </string-array>
+
+    <!-- 素材菜单标题 -->
+    <string name="editor_materials_img">素材库图片</string>
+    <string name="editor_materials_video">素材库视频</string>
+    <string name="editor_materials_txt">素材库文字</string>
+    <string name="editor_local_img">本地图片</string>
+    <string name="editor_local_video">本地视频</string>
+</resources>
